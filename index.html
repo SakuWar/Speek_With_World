@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Cam Translator</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="json.js"></script>
+</head>
+<body>
+
+  <!-- Panel de configuración inicial -->
+  <div id="configPanel" class="config-panel">
+    <div class="config-form">
+      <h2>🔧 Configuración de Credenciales</h2>
+      
+      <div class="form-group">
+        <label>Speech Key (Azure Speech Service):</label>
+        <input type="password" id="inputSpeechKey" placeholder="Ingresa tu Speech Key">
+        <small>Clave de Azure Speech Service</small>
+      </div>
+
+      <div class="form-group">
+        <label>Speech Region:</label>
+        <input type="text" id="inputSpeechRegion" placeholder="ej: westeurope, eastus">
+        <small>Región del servicio Speech</small>
+      </div>
+
+      <div class="form-group">
+        <label>Translator Key (Azure Translator):</label>
+        <input type="password" id="inputTranslatorKey" placeholder="Ingresa tu Translator Key">
+        <small>Clave de Azure Translator</small>
+      </div>
+
+      <div class="form-group">
+        <label>Translator Region:</label>
+        <input type="text" id="inputTranslatorRegion" placeholder="ej: westeurope, eastus">
+        <small>Región del servicio Translator</small>
+      </div>
+
+      <button onclick="saveCredentials()">💾 Guardar y Continuar</button>
+      <div id="configStatus" class="status"></div>
+    </div>
+  </div>
+
+  <video id="cam" autoplay playsinline></video>
+
+  <div class="menu hidden" id="controlMenu">
+    <label>Idioma destino:</label>
+    <select id="targetLang">
+      <option value="en">Inglés</option>
+      <option value="de">Alemán</option>
+      <option value="fr">Francés</option>
+      <option value="ja">Japonés</option>
+      <option value="it">Italiano</option>
+      <option value="pt">Portugués</option>
+    </select>
+
+    <button id="startBtn" onclick="start()">Iniciar todo</button>
+    <button id="micBtn" onclick="toggleMic()" disabled style="background: #f44336;">🎤 Mutear</button>
+    <button onclick="showConfig()" style="background: #FF9800;">⚙️ Cambiar Keys</button>
+    <div id="status" class="status"></div>
+  </div>
+
+  <div class="subtitles">
+    <div id="original"></div>
+    <div id="translated"></div>
+  </div>
+
+<script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+
+</body>
+</html>
