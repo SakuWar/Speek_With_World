@@ -7,65 +7,76 @@
 </head>
 <body>
 
-  <!-- Panel de configuración inicial -->
-  <div id="configPanel" class="config-panel">
-    <div class="config-form">
-      <h2>🔧 Configuración de Credenciales</h2>
-      
-      <div class="form-group">
-        <label>Speech Key (Azure Speech Service):</label>
-        <input type="password" id="inputSpeechKey" placeholder="Ingresa tu Speech Key">
-        <small>Clave de Azure Speech Service</small>
-      </div>
+<!-- Panel de configuración inicial -->
+<div id="configPanel" class="config-panel">
+  <div class="config-form">
+    <h2>🔧 Configuración de Credenciales</h2>
 
-      <div class="form-group">
-        <label>Speech Region:</label>
-        <input type="text" id="inputSpeechRegion" placeholder="ej: westeurope, eastus">
-        <small>Región del servicio Speech</small>
-      </div>
-
-      <div class="form-group">
-        <label>Translator Key (Azure Translator):</label>
-        <input type="password" id="inputTranslatorKey" placeholder="Ingresa tu Translator Key">
-        <small>Clave de Azure Translator</small>
-      </div>
-
-      <div class="form-group">
-        <label>Translator Region:</label>
-        <input type="text" id="inputTranslatorRegion" placeholder="ej: westeurope, eastus">
-        <small>Región del servicio Translator</small>
-      </div>
-
-      <button onclick="saveCredentials()">💾 Guardar y Continuar</button>
-      <div id="configStatus" class="status"></div>
+    <div class="form-group">
+      <label>Speech Key (Azure Speech Service):</label>
+      <input type="password" id="inputSpeechKey" placeholder="Ingresa tu Speech Key">
+      <small>Clave de Azure Speech Service</small>
     </div>
+
+    <div class="form-group">
+      <label>Speech Region:</label>
+      <input type="text" id="inputSpeechRegion" placeholder="ej: westeurope, eastus">
+      <small>Región del servicio Speech</small>
+    </div>
+
+    <div class="form-group">
+      <label>Translator Key (Azure Translator):</label>
+      <input type="password" id="inputTranslatorKey" placeholder="Ingresa tu Translator Key">
+      <small>Clave de Azure Translator</small>
+    </div>
+
+    <div class="form-group">
+      <label>Translator Region:</label>
+      <input type="text" id="inputTranslatorRegion" placeholder="ej: westeurope, eastus">
+      <small>Región del servicio Translator</small>
+    </div>
+
+    <button onclick="saveCredentials()">💾 Guardar y Continuar</button>
+    <div id="configStatus" class="status"></div>
   </div>
+</div>
 
-  <video id="cam" autoplay playsinline></video>
+<video id="cam" autoplay playsinline></video>
 
-  <div class="menu hidden" id="controlMenu">
-    <label>Idioma destino:</label>
-    <select id="targetLang">
-      <option value="en">Inglés</option>
-      <option value="de">Alemán</option>
-      <option value="fr">Francés</option>
-      <option value="ja">Japonés</option>
-      <option value="it">Italiano</option>
-      <option value="pt">Portugués</option>
-    </select>
+<div class="menu hidden" id="controlMenu">
+  <label>Idioma destino:</label>
+  <select id="targetLang">
+    <option value="en">Inglés</option>
+    <option value="de">Alemán</option>
+    <option value="fr">Francés</option>
+    <option value="ja">Japonés</option>
+    <option value="it">Italiano</option>
+    <option value="pt">Portugués</option>
+  </select>
 
-    <button id="startBtn" onclick="start()">Iniciar todo</button>
-    <button id="micBtn" onclick="toggleMic()" disabled style="background: #f44336;">🎤 Mutear</button>
-    <button onclick="showConfig()" style="background: #FF9800;">⚙️ Cambiar Keys</button>
-    <div id="status" class="status"></div>
-  </div>
+  <button id="startBtn" onclick="start()">Iniciar todo</button>
+  <button id="micBtn" onclick="toggleMic()" disabled style="background: #f44336;">🎤 Mutear</button>
+  <button onclick="showConfig()" style="background: #FF9800;">⚙️ Cambiar Keys</button>
+  <div id="status" class="status"></div>
+</div>
 
-  <div class="subtitles">
-    <div id="original"></div>
-    <div id="translated"></div>
-  </div>
+<div class="subtitles">
+  <div id="original"></div>
+  <div id="translated"></div>
+</div>
 
-<script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+<script src="https://cdn.jsdelivr.net/npm/microsoft-cognitiveservices-speech-sdk@latest/distrib/browser/microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
+<script>
+  // Verificar que el SDK se cargó correctamente
+  window.addEventListener('load', function () {
+    if (typeof SpeechSDK === 'undefined') {
+      console.error('Speech SDK no se cargó correctamente');
+      document.getElementById('configStatus').innerText = '❌ Error al cargar Speech SDK';
+    } else {
+      console.log('Speech SDK cargado correctamente');
+    }
+  });
+</script>
 
 </body>
 </html>

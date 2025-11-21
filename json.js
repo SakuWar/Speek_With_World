@@ -2,8 +2,7 @@ let speechKey = "";
 let speechRegion = "";
 let translatorKey = "";
 let translatorRegion = "";
-const translatorEndpoint =
-  "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0";
+const translatorEndpoint = "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0";
 
 let lastTranslatedText = "";
 let translationTimeout = null;
@@ -12,13 +11,11 @@ let isMicMuted = false;
 
 function saveCredentials() {
   const configStatus = document.getElementById("configStatus");
-
+  
   speechKey = document.getElementById("inputSpeechKey").value.trim();
   speechRegion = document.getElementById("inputSpeechRegion").value.trim();
   translatorKey = document.getElementById("inputTranslatorKey").value.trim();
-  translatorRegion = document
-    .getElementById("inputTranslatorRegion")
-    .value.trim();
+  translatorRegion = document.getElementById("inputTranslatorRegion").value.trim();
 
   // Validar que todos los campos estén llenos
   if (!speechKey || !speechRegion || !translatorKey || !translatorRegion) {
@@ -66,7 +63,7 @@ async function translateText(text, toLang) {
 
     const headers = {
       "Ocp-Apim-Subscription-Key": translatorKey,
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     };
 
     if (translatorRegion && translatorRegion !== "") {
@@ -76,7 +73,7 @@ async function translateText(text, toLang) {
     const response = await fetch(url, {
       method: "POST",
       headers: headers,
-      body: JSON.stringify([{ Text: text }]),
+      body: JSON.stringify([{ "Text": text }])
     });
 
     console.log("Status de respuesta:", response.status);
@@ -99,24 +96,30 @@ async function translateText(text, toLang) {
 async function start() {
   const startBtn = document.getElementById("startBtn");
   const statusDiv = document.getElementById("status");
-
+  
+  // Verificar que el SDK esté cargado
+  if (typeof SpeechSDK === 'undefined') {
+    statusDiv.innerText = "❌ Error: Speech SDK no cargado. Recarga la página.";
+    statusDiv.style.color = "#f44336";
+    console.error('SpeechSDK no está definido');
+    return;
+  }
+  
   startBtn.disabled = true;
   statusDiv.innerText = "Iniciando...";
+  statusDiv.style.color = "#4CAF50";
 
   try {
     // --- INICIAR CÁMARA ---
     const video = document.getElementById("cam");
     const stream = await navigator.mediaDevices.getUserMedia({
       video: true,
-      audio: true,
+      audio: true
     });
     video.srcObject = stream;
 
     // --- RECONOCIMIENTO DE VOZ ---
-    const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(
-      speechKey,
-      speechRegion
-    );
+    const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(speechKey, speechRegion);
     speechConfig.speechRecognitionLanguage = "es-ES";
 
     const audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
@@ -127,11 +130,11 @@ async function start() {
       const text = e.result.text;
       if (text) {
         document.getElementById("original").innerText = text;
-
+        
         if (translationTimeout) {
           clearTimeout(translationTimeout);
         }
-
+        
         translationTimeout = setTimeout(async () => {
           if (text.length > 3) {
             const lang = document.getElementById("targetLang").value;
@@ -148,11 +151,11 @@ async function start() {
         const text = e.result.text;
         if (text && text !== lastTranslatedText) {
           document.getElementById("original").innerText = text;
-
+          
           const lang = document.getElementById("targetLang").value;
           const translated = await translateText(text, lang);
           document.getElementById("translated").innerText = translated;
-
+          
           lastTranslatedText = text;
         }
       }
@@ -175,6 +178,7 @@ async function start() {
         startBtn.disabled = false;
       }
     );
+
   } catch (error) {
     console.error("Error:", error);
     statusDiv.innerText = "Error: " + error.message;
@@ -184,7 +188,7 @@ async function start() {
 
 function toggleMic() {
   const micBtn = document.getElementById("micBtn");
-
+  
   if (!recognizer) {
     return;
   }
